@@ -1,1 +1,1 @@
-# comp0241-image-segmentation
+# comp0241-lab2
