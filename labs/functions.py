@@ -78,6 +78,7 @@ def dynamicProgram(unaryCosts, pairwiseCosts):
     return bestPath
 
 
+
 def dynamicProgramVec(unaryCosts, pairwiseCosts):
     
     # same preprocessing code
@@ -120,25 +121,6 @@ def dynamicProgramVec(unaryCosts, pairwiseCosts):
         bestPath[cPosition] = parents[bestPath[cPosition + 1], cPosition + 1]
 
     return bestPath
-
-
-
-
-import numba
-@numba.jit(nopython=True, parallel=True)
-def compute_costs(minimumCost, unaryCosts, pairwiseCosts, nNodesPerPosition, nPosition, parents):
-    # FORWARD PASS: Vectorized computation for each column
-    for cPosition in range(1, nPosition):
-        for currentNode in numba.prange(nNodesPerPosition):
-            # Compute the range of costs for this node at this position
-            prev_costs = minimumCost[:, cPosition - 1] + pairwiseCosts[:, currentNode]
-            # Find the minimum cost and its parent
-            min_cost = np.min(prev_costs)
-            min_parent = np.argmin(prev_costs)
-            # Update minimum cost and parent matrices
-            minimumCost[currentNode, cPosition] = min_cost + unaryCosts[currentNode, cPosition]
-            parents[currentNode, cPosition] = min_parent
-
 
 
 
